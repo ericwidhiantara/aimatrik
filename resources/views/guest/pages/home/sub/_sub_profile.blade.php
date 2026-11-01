@@ -31,7 +31,10 @@
                         <span class="aim-profile-role">PLATFORM DEVELOPER</span>
                         <h3>Irfan Walhidayah</h3>
                         <p class="aim-profile-position">
-                            Mahasiswa Profesi Pendidikan Insinyur Universitas Negeri Makassar
+                            Mahasiswa Profesi Pendidikan Insinyur, Universitas Negeri Makassar
+                        </p>
+                        <p class="aim-profile-position">
+                            NIM: 262558054146    
                         </p>
                         <p class="aim-profile-bio">
                             Bertanggung jawab dalam mengembangkan dan mengelola platform ini dengan

@@ -11,7 +11,7 @@ export default defineConfig({
         baseURL: process.env.PW_BASE_URL || 'http://127.0.0.1:8000',
         browserName: 'chromium',
         headless: true,
-        screenshot: 'only-on-failure',
+        screenshot: 'on',
         trace: 'retain-on-failure',
         video: 'off',
     },
