@@ -9,6 +9,7 @@ class AppConst
         'demo-integrasi-ai.ganadev.com',
         'integrasi-ai.rudaya.id',
         'govaihei.rudaya.id',
+'aimetrik.my.id',
     ];
 
     const LEVEL_MAP = [
