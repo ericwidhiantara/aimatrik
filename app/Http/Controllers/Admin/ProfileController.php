@@ -15,6 +15,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
@@ -55,6 +56,7 @@ final class ProfileController extends Controller
             // Update user
             $this->userCommandService->updateUserProfile(request: $request, user: $user);
             DB::commit();
+            Cache::forget("user:{$user->id}:profileImage");
 
             // Return
             return to_route('admin.setting.profile.index')->with('success', trans('response.success.update', ['data' => 'User Profile']));
@@ -71,7 +73,7 @@ final class ProfileController extends Controller
         // Hapus asset lama
         $oldAssets = $this->assetQueryService->getAllAsset(pathType: User::class, pathId: $user->id);
         foreach ($oldAssets as $asset) {
-            Storage::delete('public/'.$asset->asset_path);
+            Storage::disk('public')->delete($asset->asset_path);
         }
 
         // Hapus semua asset lama
@@ -89,10 +91,12 @@ final class ProfileController extends Controller
         }
 
         // Simpan file ke storage Laravel
-        $fileName = time().'_'.$file->getClientOriginalName();
-        $filePath = $file->storeAs('public/user-profile', $fileName);
+        $filePath = $file->store('user-profile', 'public');
+        if (! $filePath) {
+            throw new Exception(trans('response.error.update', ['data' => 'User', 'error' => 'Foto profil gagal disimpan']));
+        }
 
         // Simpan informasi file ke assetCommandService
-        return $this->assetCommandService->storeAsset(pathType: User::class, pathId: $user->id, pathName: str_replace('public/', '', $filePath));
+        return $this->assetCommandService->storeAsset(pathType: User::class, pathId: $user->id, pathName: $filePath);
     }
 }
